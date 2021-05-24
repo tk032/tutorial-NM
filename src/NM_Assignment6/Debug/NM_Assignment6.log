@@ -1,0 +1,9 @@
+﻿  Differentiation.cpp
+C:\Users\tk032\source\repos\NM_Assignment6\Differentiation.cpp(48,26): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\tk032\source\repos\NM_Assignment6\Differentiation.cpp(49,26): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\tk032\source\repos\NM_Assignment6\Differentiation.cpp(66,27): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\tk032\source\repos\NM_Assignment6\Differentiation.cpp(94,53): warning C4244: '인수': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\tk032\source\repos\NM_Assignment6\Differentiation.cpp(94,49): warning C4244: '인수': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\tk032\source\repos\NM_Assignment6\Differentiation.cpp(104,22): warning C4307: '*': 부호 있는 정수 계열 상수 오버플로입니다.
+C:\Users\tk032\source\repos\NM_Assignment6\Differentiation.cpp(115,22): warning C4307: '*': 부호 있는 정수 계열 상수 오버플로입니다.
+  NM_Assignment6.vcxproj -> C:\Users\tk032\source\repos\NM_Assignment6\Debug\NM_Assignment6.exe
