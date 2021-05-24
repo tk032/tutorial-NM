@@ -1,9 +1,9 @@
 /*----------------------------------------------------------------\
 @ Numerical Methods by Young-Keun Kim - Handong Global University
 
-Author           : [YOUR NAME]
+Author           : [¾çÅÂ±Õ]
 Created          : 26-03-2018
-Modified         : 18-03-2021
+Modified         : 18-05-2021
 Language/ver     : C++ in MSVS2019
 
 Description      : myMatrix.cpp
@@ -112,3 +112,27 @@ Matrix	zeros(int _rows, int _cols)
 
 	return Out;
 }
+
+Matrix copyMat(Matrix _A) {
+	Matrix Out = createMat(_A.rows, _A.cols);
+
+	for (int i = 0; i < _A.rows; i++) {                          
+		for (int j = 0; j < _A.cols; j++) {                      
+			Out.at[i][j] = _A.at[i][j];
+
+		}
+	}
+	return Out;
+}
+
+
+Matrix	arr2Mat(double* _1Darray, int _rows, int _cols) {
+	Matrix Output = createMat(_rows, _cols);
+
+	for (int i = 0; i < _rows; i++)
+		for (int j = 0; j < _cols; j++)
+			Output.at[i][j] = _1Darray[i * _cols + j];
+
+	return Output;
+}
+

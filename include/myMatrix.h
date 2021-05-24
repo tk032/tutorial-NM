@@ -1,9 +1,9 @@
 /*----------------------------------------------------------------\
 @ Numerical Methods by Young-Keun Kim - Handong Global University
 
-Author           : [YOUR NAME]
+Author           : [¾çÅÂ±Õ]
 Created          : 26-03-2018
-Modified         : 18-03-2021
+Modified         : 18-05-2021
 Language/ver     : C++ in MSVS2019
 
 Description      : myMatrix.h
@@ -15,6 +15,8 @@ Description      : myMatrix.h
 #include <iostream>
 #include <string>
 #include <fstream>
+#include <stdlib.h>
+#include <math.h>
 
 typedef struct { 
 	double** at;
@@ -60,6 +62,8 @@ extern	Matrix	copyMat(Matrix _A);
 
 // Copy matrix Elements from A to B
 extern	void	copyVal(Matrix _A, Matrix _B);
+
+extern Matrix	arr2Mat(double* _1Darray, int _rows, int _cols);
 
 
 #endif
