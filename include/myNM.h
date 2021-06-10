@@ -15,6 +15,10 @@ Description      : myNM.h
 #include "myMatrix.h"
 
 
+#define Eu		0
+#define Em		1
+#define PI		3.14159265358979323846
+
 
 extern Matrix linearFit(Matrix _x, Matrix _y); 
 
@@ -30,6 +34,16 @@ extern Matrix	gradientFunc(double func(const double x), Matrix xin);
 
 extern void gradient1D(double* _1Darray_x, double* _1Darray_y, double* _1Darray_dydx, int m);
 
+extern double bisectionNL(double _a0, double _b0, double _tol);			// Bisection Method
+
+extern double newtonRaphson(double _x, double _tol);				    // NewtonRapshon Method
+
+extern double Bonusfunc(double _x);									    // bonus problem y function
+
+extern double BonusNR(double _x0, double _tol);
+
+extern double HybridA(double _a0, double _b0, double _x0, double _tol); //bonus problem Hybrid algorithm
+
 double Func(double _x);
  
 double dFunc(double _x); 
@@ -37,8 +51,6 @@ double dFunc(double _x);
 double myFunc(const double x);
 
 double mydFunc(const double x);
-
-double newtonRaphson(double _x0, double _tol);
 
 double newtonRaphsonFunc(double func(const double x), double dfunc(const double x), float x0, float tol);
 
@@ -49,6 +61,19 @@ double integral(double func(const double x), double _a, double _b, int n);
 double integralMid(double x[], double y[], int m);
 
 double integral38(double func(const double x), double a, double b, int n);
+
+void odeEU(double func(const double x, const double y), double v[], double t0, double tf, double h);
+
+void odeEM(double func(const double x, const double y), double v[], double t0, double tf, double h);
+
+void ode(double func(const double x, const double y), double v[], double t0, double tf, double h, int method);
+
+void odeRK2(double odeFunc(const double t, const double y), double y[], double t0, double tf, double h, double y0);
+
+void odeRK4(double odeFunc(const double t, const double y), double y[], double t0, double tf, double h, double y0);
+
+void sys2RK2(void odeFunc_sys2(const double t, const double Y[], double dYdt[]), double y1[], double y2[], double t0, double tf, double h, double y1_init, double y2_init);
+void sys2RK4(void odeFunc_sys2(const double t, const double Y[], double dYdt[]), double y1[], double y2[], double t0, double tf, double h, double y1_init, double y2_init);
 
 extern Matrix MultMat(Matrix _A, Matrix _B);
 

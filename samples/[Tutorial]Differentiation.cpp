@@ -6,10 +6,10 @@ Created          : 10-05-2021
 Modified         : 10-05-2021
 Language/ver     : C++ in MSVS2019
 
-Description      : [Tutorial]Differentiation.cpp
+Description      : ODE
 -------------------------------------------------------------------------------*/
 
-#include "myNM.h"
+#include "../../include/myNM.h"
 
 // Define a function that defines the target equation.
 double myFunc(const double x);

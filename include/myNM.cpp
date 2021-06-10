@@ -29,9 +29,145 @@ double dFunc(double _x) // dy/dx의 도함수
 }
 
 
+double bisectionNL(double _a0, double _b0, double _tol) // BisectionMethod
+{
+	int k = 0;
+	int nmax = 1000;
+	double a = _a0;
+	double b = _b0;
+	double xn = 0;
+	double ep = 1000;
+
+	// you should check     if(Func(a) * Func(b) >= 0)
+	// what should you do for this condition?
+
+	if (Func(a) * Func(b) >= 0)
+		printf("\n두 함수 값의 부호가 같습니다. 초기값을 변경해주세요\n\n");   //부호가 같을 경우 경고문 + 실행하지 않음
+	else                                                                         //부호가 다를 경우 함수 실행
+	{
+		do {
+			xn = (a + b) / 2;
+			ep = fabs(Func(xn));
+			printf("iteration:%d \t", k);
+			printf("x(n): %f \t", xn);
+			printf("tolerance: %.10f\n", ep);
+
+			if (Func(a) * Func(xn) < 0)
+				b = xn;
+			else
+				a = xn;
+			k++;
+		} while (k<nmax && ep>_tol);
+	}
+
+	return xn;
+}
 
 
 
+//-----------------------------------  Bonus  --------------------------------------------------//
+
+
+
+
+
+double Bonusfunc(double _x)     // y = 1/x - 2  function
+{
+	double x = _x;
+	double F = 1 / x - 2;
+	return F;
+}
+
+
+
+
+
+double Bonusdfunc(double _x)     // y = 1/x - 2  function
+{
+	double x = _x;
+	double F = -1 / pow(_x, 2);
+	return F;
+}
+
+double BonusNR(double _x0, double _tol)                                    //Bonus problem 에서 사용한 NewtonRaphson Method
+{
+	int k = 0;
+	int Nmax = 1000;
+	double x = _x0;
+	double xn = 0;
+	double ep = 1000;
+
+	if (Bonusdfunc(x) == 0)
+		printf("\n함수의 기울기가 0 입니다. 초기값을 변경해주세요\n\n");   // 도함수 크기가 0 이면 오류이므로 실행하지 않음
+	else                                                                   // 도함수 크기가 0이 아니면 실행
+	{
+		do {
+			xn = x - Bonusfunc(x) / Bonusdfunc(x);                         //  함수만 Bonusfunc 으로 바꿈
+			ep = fabs(Bonusfunc(xn));
+			printf("Iteration:%d \t", k);
+			printf("X(n): %f \t", xn);
+			printf("Tolerance: %.10f\n", ep);
+			x = xn;
+			k++;
+		} while (k<Nmax && ep>_tol);
+	}
+
+	return xn;
+}
+
+
+double HybridA(double _a0, double _b0, double _x0, double _tol)// BonusProblem hybrid algorithm 
+{
+	int k = 0;
+	int i = 0;
+	int Nmax = 1000;
+	double a = _a0;
+	double b = _b0;
+	double x = _x0;
+	double xn = 0;
+	double ep = 1000;
+
+
+	while (i < 100)                                                    // 100번 이후 발산으로 간주
+	{
+		xn = x - Bonusfunc(x) / Bonusdfunc(x);                         //  함수만 Bonusfunc 으로 바꿈
+		ep = fabs(Bonusfunc(xn));
+		printf("Iteration:%d \t", k);
+		printf("X(n): %f \t", xn);
+		printf("Tolerance: %.10f\n", ep);
+		x = xn;
+		if (x < a || x > b)                                             //bound 밖의 해를 줄 떄 break
+		{
+			k++;
+			break;
+		}
+		else
+			k++;
+		i++;
+	}
+	if (ep > _tol)                                                     //발산할 때 혹은 bound 밖의 해를 줄 때 bisection 실행
+	{
+		if (xn >= b)                                                   //xn 과 bound[a b] 로 초기값 설정
+			xn = (x + a) / 2;
+		else if (xn <= a)
+			xn = (x + b) / 2;
+		do {
+			ep = fabs(Bonusfunc(xn));
+			printf("iteration:%d \t", k);
+			printf("x(n): %f \t", xn);
+			printf("tolerance: %.10f\n", ep);
+
+			if (Bonusfunc(a) * Bonusfunc(xn) < 0)
+				b = xn;
+			else
+				a = xn;
+			xn = (a + b) / 2;
+			k++;
+		} while (k<Nmax && ep>_tol);
+	}
+
+	return xn;
+}
 
 double newtonRaphson(double _x0, double _tol) //NewtonRaphson Method
 {
@@ -832,3 +968,213 @@ double	cond(Matrix _A) {
 	return x / y;
 
 }
+
+
+void odeEU(double func(const double x, const double y), double v[], double t0, double tf, double h) {
+	double N = (tf - t0) / h; 
+	double t[100] = { 0 }; 
+	v[0] = 0;
+	for (int i = 0; i < N - 1; i++) { 
+		v[i + 1] = v[i] + func(t[i], v[i]) * h; 
+		t[i + 1] = t[i] + h;  
+	}
+}
+
+
+void odeEM(double func(const double x, const double y), double v[], double t0, double tf, double h) {
+	double N = (tf - t0) / h;
+	double t[100] = { 0 };
+	double vE[100] = { 0 };               // vE[i+1] = y[i] + f*h
+	v[0] = 0;
+	for (int i = 0; i < N - 1; i++) {
+
+		vE[i + 1] = v[i] + func(t[i], v[i]) * h;
+		t[i + 1] = t[i] + h;
+		v[i + 1] = v[i] + h / 2 * (func(t[i], v[i]) + func(t[i + 1], vE[i + 1]));
+	}
+}
+
+void ode(double func(const double x, const double y), double v[], double t0, double tf, double h, int method) {
+	if(method == Eu){
+		odeEU(func, v, t0, tf, h);
+	}
+	else if(method == Em) {
+		odeEM(func, v, t0, tf, h);
+	}
+}
+
+
+
+void odeRK2(double odeFunc(const double t, const double y), double y[], double t0, double tf, double h, double y0)
+{
+	double C1 = 0.5;
+	double C2 = 0.5;
+	double alpha = 1;
+	double beta = alpha;  // alpha=beta
+
+	int N = (tf - t0) / h + 1;
+	double ti = t0;
+	double y_EU;
+	double K1 = 0, K2 = 0;
+
+	// Initialization 
+	y[0] = y0;
+
+	for (int i = 0; i < N - 1; i++)
+	{
+		// First slope  
+		K1 = odeFunc(ti, y[i]);
+		// Second slope  
+		y_EU = y[i] + beta * K1 * h;
+		K2 = odeFunc(ti + alpha * h, y_EU);
+
+		// Update 
+		y[i + 1] = y[i] + (C1 * K1 + C2 * K2) * h;
+		ti += h;
+	}
+}
+
+void odeRK4(double odeFunc(const double t, const double y), double y[], double t0, double tf, double h, double y0)
+{
+
+	double a = 0.5;
+	int N = (tf - t0) / h + 1;
+	double ti = t0;
+	double y_EU;
+	double K1 = 0, K2 = 0, K3 = 0, K4 = 0;
+
+	// Initialization 
+	y[0] = y0;
+
+	for (int i = 0; i < N - 1; i++)
+	{
+		// First slope  
+		K1 = odeFunc(ti, y[i]);
+		// Second slope 
+		y_EU = y[i] + a * K1 * h;
+		K2 = odeFunc(ti + a * h, y_EU);
+		// Third slope
+		y_EU = y[i] + a * K2 * h;
+		K3 = odeFunc(ti + a * h, y_EU);
+		// Fourth slope
+		y_EU = y[i] + K3 * h;
+		K4 = odeFunc(ti + h, y_EU);
+		// Update 
+		y[i + 1] = y[i] + (K1 + 2 * K2 + 2 * K3 + K4) * h / 6;
+		ti += h;
+	}
+}
+
+void sys2RK2(void odeFunc_sys2(const double t, const double Y[], double dYdt[]), double y1[], double y2[], double t0, double tf, double h, double y1_init, double y2_init)
+{
+	int N = (tf - t0) / h + 1;
+	double ti = t0;
+
+	double K1[2] = { 0 };         // K1 = [K1_y1, K1_y2]
+	double K2[2] = { 0 };         // k2 = [K2_y1, K2_y2]
+	double Yin[2] = { 0 };
+	double K1_y1 = 0, K1_y2 = 0, K2_y1 = 0, K2_y2 = 0;
+
+	//Y[0] == y(t);
+	//Y[1] == z(t);
+	//dYdt[0] = z(t) = Y[1];
+	//dYdt[1] = zdot;
+
+
+
+	// Initial condition
+	y1[0] = y1_init;        //y(t)
+	y2[0] = y2_init;        //z(t) = dydt(t)
+
+	for (int i = 0; i < N - 1; i++) {
+
+		// Slope 1 : K1
+		Yin[0] = y1[i];		// z
+		Yin[1] = y2[i];		// dzdt		
+		odeFunc_sys2(ti, Yin, K1);
+		K1_y1 = K1[0];
+		K1_y2 = K1[1];
+
+		// Slope 2 : K2
+
+		Yin[0] = y1[i] + K1_y1 * h;		// z
+		Yin[1] = y2[i] + K1_y2 * h;		// dzdt		
+		odeFunc_sys2(ti + h, Yin, K2);
+		K2_y1 = K2[0];
+		K2_y2 = K2[1];
+
+
+		// Update
+		y1[i + 1] = y1[i] + (K1_y1 + K2_y1) * 0.5 * h;
+		y2[i + 1] = y2[i] + (K1_y2 + K2_y2) * 0.5 * h;
+		ti += h;
+	}
+}
+
+
+// Classical RK4
+void sys2RK4(void odeFunc_sys2(const double t, const double Y[], double dYdt[]), double y1[], double y2[], double t0, double tf, double h, double y1_init, double y2_init)
+{
+
+	int N = (tf - t0) / h + 1;
+	double ti = t0;
+
+	double K1[2] = { 0 };         // K1 = [K1_y1, K1_y2]
+	double K2[2] = { 0 };         // k2 = [K2_y1, K2_y2]
+	double K3[2] = { 0 };
+	double K4[2] = { 0 };
+	double Yin[2] = { 0 };
+	double K1_y1 = 0, K1_y2 = 0, K2_y1 = 0, K2_y2 = 0, K3_y1 = 0, K3_y2 = 0, K4_y1 = 0, K4_y2 = 0;
+
+	//Y[0] == y(t);
+	//Y[1] == z(t);
+	//dYdt[0] = z(t) = Y[1];
+	//dYdt[1] = zdot;
+
+
+
+	// Initial condition
+	y1[0] = y1_init;        //y(t)
+	y2[0] = y2_init;        //z(t) = dydt(t)
+
+	for (int i = 0; i < N - 1; i++) {
+
+		// Slope 1 : K1
+		Yin[0] = y1[i];		// z
+		Yin[1] = y2[i];		// dzdt		
+		odeFunc_sys2(ti, Yin, K1);
+		K1_y1 = K1[0];
+		K1_y2 = K1[1];
+
+		// Slope 2 : K2
+
+		Yin[0] = y1[i] + K1_y1 * h;		// z
+		Yin[1] = y2[i] + K1_y2 * h;		// dzdt		
+		odeFunc_sys2(ti + h, Yin, K2);
+		K1_y1 = K2[0];
+		K1_y2 = K2[1];
+
+		// Slope 3 : K3
+
+		Yin[0] = y1[i] + K2_y1 * h;		// z
+		Yin[1] = y2[i] + K2_y2 * h;		// dzdt		
+		odeFunc_sys2(ti + h, Yin, K2);
+		K1_y1 = K3[0];
+		K1_y2 = K3[1];
+
+		// Slope 4 : K4
+
+		Yin[0] = y1[i] + K3_y1 * h;		// z
+		Yin[1] = y2[i] + K3_y2 * h;		// dzdt		
+		odeFunc_sys2(ti + h, Yin, K2);
+		K1_y1 = K4[0];
+		K1_y2 = K4[1];
+
+		// Update
+		y1[i + 1] = y1[i] + (K1_y1 + K2_y1) * 0.5 * h;
+		y2[i + 1] = y2[i] + (K1_y2 + K2_y2) * 0.5 * h;
+		ti += h;
+	}
+
+}
+
