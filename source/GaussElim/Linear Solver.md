@@ -11,7 +11,7 @@ void gaussElim(Matrix _A, Matrix _B, Matrix* _U, Matrix *_d)
 **Parameters**
 
 * **A**: Matrix **A** in structure Matrix form, Should be (nxn) square.
-* **b: Vector **b** in structure Matrix form. Should be(nx1)
+* **b: **Vector **b** in structure Matrix form. Should be(nx1)
 
 ## backsub()
 
